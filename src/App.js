@@ -1,18 +1,31 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import CommentInput from './CommentInput'
+import CommentList from './CommentList'
 
 class App extends Component {
+  constructor () {
+    super()
+    this.state = {
+      comments: []
+    }
+  }
+  handleSubmitComment (comment) {
+    if (!comment) return
+    if (!comment.username) return alert('请输入用户名')
+    if (!comment.content) return alert('请输入评论内容')
+    this.state.comments.push(comment)
+    this.setState({
+      comments: this.state.comments
+    })
+  }
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div className='wrapper'> 
+         <CommentInput
+          onSubmit={this.handleSubmitComment.bind(this)} />
+        <CommentList comments={this.state.comments}/>
       </div>
     );
   }
