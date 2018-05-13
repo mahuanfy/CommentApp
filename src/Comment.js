@@ -13,6 +13,9 @@ class Comment extends Component {
   }
   componentWillMount () {
     this._updateTimeString()
+    this._time = setInterval(
+      this._updateTimeString.bind(this),5000
+    )
   }
 
   _updateTimeString() {
