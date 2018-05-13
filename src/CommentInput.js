@@ -2,6 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 class CommentInput extends Component {
+    static propTypes = {
+        onSubmit: PropTypes.func,
+    }
     constructor() {
         super()
         this.state = {
@@ -9,8 +12,26 @@ class CommentInput extends Component {
             content: ''
         }
     }
-    static propTypes = {
-        onSubmit : PropTypes.func,
+    componentWillMount() {
+        this._loadUsername()
+    }
+    componentDidMount() {
+        this.textarea.focus()
+    }
+    _saveUserName(username) {
+        localStorage.setItem("username", username)
+    }
+    _loadUsername() {
+        const username = localStorage.getItem('username')
+        if (username) {
+            this.setState({ username })
+        }
+    }
+    _loadUsername() {
+        const username = localStorage.getItem('username')
+        if (username) {
+            this.setState({ username })
+        }
     }
     handleUsernameChange(event) {
         this.setState({
@@ -29,38 +50,11 @@ class CommentInput extends Component {
         }
         this.setState({ content: '' })
     }
-    componentDidMount() {
-        this.textarea.focus()
-    }
-    _saveUserName(username){
-        localStorage.setItem("username",username)
-    }
-    componentWillMount () {
-    this._loadUsername()
-  }
-
-  _loadUsername () {
-    const username = localStorage.getItem('username')
-    if (username) {
-      this.setState({ username })
-    }
-  }
-  componentWillMount () {
-    this._loadUsername()
-  }
-
-  _loadUsername () {
-    const username = localStorage.getItem('username')
-    if (username) {
-      this.setState({ username })
-    }
-  }
-
-    handleUsernameBlur(e){
+    handleUsernameBlur(e) {
         this._saveUserName(e.target.value)
     }
     render() {
-        
+
         return (
             <div className='comment-input'>
                 <div className='comment-field'>
