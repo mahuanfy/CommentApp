@@ -1,13 +1,37 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 class Comment extends Component {
-  render () {
+  static propTypes = {
+    comment: PropTypes.object.isRequired
+  }
+  constructor() {
+    super()
+    this.state = {
+      timeString: ""
+    }
+  }
+  componentWillMount () {
+    this._updateTimeString()
+  }
+
+  _updateTimeString() {
+    const comment = this.props.comment
+    const showTime = (+Date.now() - comment.createdTime) / 1000
+    this.setState({
+      timeString: showTime > 60 ? `${Math.round(showTime / 60)}分钟前` : `${Math.round(Math.max(showTime, 1))}秒前`
+    })
+  }
+  render() {
     return (
       <div className='comment'>
         <div className='comment-user'>
           <span>{this.props.comment.username} </span>：
         </div>
         <p>{this.props.comment.content}</p>
+        <span className='comment-createdtime'>
+          {this.state.timeString}
+        </span>
       </div>
     )
   }
