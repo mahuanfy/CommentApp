@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 
 class Comment extends Component {
   static propTypes = {
-    comment: PropTypes.object.isRequired
+    comment: PropTypes.object.isRequired,
+    onDeleteComment: PropTypes.func,
+    index: PropTypes.number
   }
   constructor() {
     super()
@@ -11,19 +13,26 @@ class Comment extends Component {
       timeString: ""
     }
   }
-  componentWillMount () {
+  componentWillMount() {
     this._updateTimeString()
     this._time = setInterval(
-      this._updateTimeString.bind(this),5000
+      this._updateTimeString.bind(this), 5000
     )
   }
-
+  componentWillUnmount() {
+    clearInterval(this._time)
+  }
   _updateTimeString() {
     const comment = this.props.comment
     const showTime = (+Date.now() - comment.createdTime) / 1000
     this.setState({
       timeString: showTime > 60 ? `${Math.round(showTime / 60)}分钟前` : `${Math.round(Math.max(showTime, 1))}秒前`
     })
+  }
+  handleDeleteComment() {
+    if (this.props.onDeleteComment) {
+      this.props.onDeleteComment(this.props.index)
+    }
   }
   render() {
     return (
@@ -34,6 +43,9 @@ class Comment extends Component {
         <p>{this.props.comment.content}</p>
         <span className='comment-createdtime'>
           {this.state.timeString}
+        </span>
+        <span className='comment-delete' onClick={this.handleDeleteComment.bind(this)}>
+          删除
         </span>
       </div>
     )
