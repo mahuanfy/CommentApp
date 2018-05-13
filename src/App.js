@@ -14,7 +14,7 @@ class App extends Component {
   componentWillMount() {
     this._loadComments()
   }
-  
+
   _loadComments() {
     let comments = localStorage.getItem('comments')
     if (comments) {
@@ -42,14 +42,14 @@ class App extends Component {
     this.setState({ comments })
     this._saveComments(comments)
   }
-  
+
   render() {
     return (
       <div className='wrapper'>
         <CommentInput
           onSubmit={this.handleSubmitComment.bind(this)} />
         <CommentList comments={this.state.comments}
-        onDeleteComment={this.handleDeleteComment.bind(this)} 
+          onDeleteComment={this.handleDeleteComment.bind(this)}
         />
       </div>
     );
